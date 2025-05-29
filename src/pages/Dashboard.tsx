@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Bell, Calendar } from 'lucide-react';
+import { Plus, Bell, Calendar, Clock } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Card, { CardContent, CardHeader } from '../components/ui/Card';
 import MedicationCard from '../components/MedicationCard';
@@ -168,7 +168,7 @@ const Dashboard: React.FC = () => {
                               {reminder && (
                                 <>
                                   <Clock className="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-400" />
-                                  {formatTime(reminder.time, reminder.period)}
+                                  {formatDate(reminder.time, reminder.period)}
                                 </>
                               )}
                             </p>

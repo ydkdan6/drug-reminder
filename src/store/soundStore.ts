@@ -53,15 +53,14 @@ export const useSoundStore = create<SoundState>((set, get) => ({
     };
   }
 
-  try {
-    // Get current user
-    const { data: { user }, error: userError } = await supabase.auth.getUser();
-    if (userError || !user) {
+    try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
       return { success: false, error: 'User not authenticated' };
     }
 
-    // Upload the file to Supabase Storage
-    const filePath = `reminder-sounds/${user.id}/${Date.now()}_${file.name}`;
+    // Use a simpler path structure
+    const filePath = `${user.id}/${Date.now()}_${file.name}`;
     const { error: uploadError } = await supabase.storage
       .from('sounds')
       .upload(filePath, file);
@@ -131,18 +130,26 @@ export const useSoundStore = create<SoundState>((set, get) => ({
     return get().sounds.find(sound => sound.id === id);
   },
 
-  getSoundUrl: async (filePath) => {
-    try {
-      const { data, error } = await supabase.storage
-        .from('sounds')
-        .createSignedUrl(filePath, 3600); // 1 hour expiry
+  // Update your getSoundUrl function in soundStore.ts
+getSoundUrl: async (filePath) => {
+  try {
+    console.log('Getting sound URL for path:', filePath);
+    
+    const { data, error } = await supabase.storage
+      .from('sounds')
+      .createSignedUrl(filePath, 3600); // 1 hour expiry
 
-      if (error) throw error;
-      
-      return data.signedUrl;
-    } catch (error) {
-      console.error('Error getting sound URL:', error);
-      return '';
+    if (error) {
+      console.error('Storage error:', error);
+      throw error;
     }
-  },
+    
+    console.log('Generated signed URL:', data.signedUrl);
+    return data.signedUrl;
+  } catch (error) {
+    console.error('Error getting sound URL:', error);
+    // Return empty string to fall back to default sound
+    return '';
+  }
+},
 }));

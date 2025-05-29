@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useReminderService } from './services/reminderService';
 
 // Pages
 import Login from './pages/Login';
@@ -50,6 +51,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
 function App() {
   const { getUser } = useAuthStore();
+
+  useReminderService();
   
   useEffect(() => {
     getUser();
