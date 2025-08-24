@@ -46,7 +46,9 @@ const AddMedication: React.FC = () => {
         email: user.email // Add email for profile creation if needed
       };
       
+      
       console.log('Final medication data being sent:', medicationData);
+      console.log("Hello", medicationData.user_id);
       
       const result = await addMedication(medicationData);
       if (result.success) {

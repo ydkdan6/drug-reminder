@@ -68,6 +68,14 @@ export const useMedicationStore = create<MedicationState>((set, get) => ({
       if (!data.user_id || data.user_id.trim() === '') {
         throw new Error('user_id is required and cannot be empty');
       }
+      console.log("🚨 Final user_id before insert:", data.user_id);
+
+
+      if (!data.user_id) {
+  console.error("❌ user_id is missing or empty!", data);
+  throw new Error("User ID is required when adding medication.");
+}
+
 
       // Prepare the medication data
       const insertData = {
@@ -100,7 +108,7 @@ export const useMedicationStore = create<MedicationState>((set, get) => ({
         .insert([
           {
             medication_id: medicationData.id,
-            user_id: data.user_id.toString().trim(), // Add user_id to reminder
+            user_id: data.user_id,
             time: data.time,
             period: data.period,
             sound_id: data.sound_id,
